@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserApiCreateRequest;
 use App\Http\Requests\UserApiReadRequest;
 use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -36,6 +37,11 @@ class UserApiController extends Controller
             ->page($page, $quantity)
             ->get();
 
-        return new UserCollection($users);
+        return response()->json(new UserCollection($users));
+    }
+
+    public function show(User $user)
+    {
+        return response()->json(new UserResource($user));
     }
 }

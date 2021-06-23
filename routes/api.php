@@ -22,3 +22,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/usuario', [UserApiController::class, 'create']);
 
 Route::get('/usuario', [UserApiController::class, 'read']);
+
+Route::get('/usuario/{user}', [UserApiController::class, 'show']);
