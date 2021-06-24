@@ -1,6 +1,5 @@
 <?php
 
-use App\Support\Facades\Salt;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +14,5 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', function () {
-    dd(Salt::generate());
     return view('welcome');
 });
