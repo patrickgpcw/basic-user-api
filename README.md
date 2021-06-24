@@ -14,6 +14,12 @@ Executar o comando:
 
 `git clone git@github.com:patrickgpcw/basic-user-api.git`
 
+## Clonando repositório
+
+Executar o comando:
+
+`git clone git@github.com:patrickgpcw/basic-user-api.git`
+
 ## Configurando o arquivo `.env`
 
 Copie `.env.example` e crie o seu proprio `.env`.
