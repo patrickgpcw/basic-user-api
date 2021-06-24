@@ -5,33 +5,27 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginApiLoginRequest;
 use App\Models\User;
-use Carbon\Carbon;
-use Firebase\JWT\JWT;
-use Illuminate\Support\Facades\Auth;
+use App\Repositories\LoginApiRepository;
 
 class LoginApiController extends Controller
 {
+    private $repository;
+
+    public function __construct(LoginApiRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function login(LoginApiLoginRequest $request)
     {
         $credentials = $request->only(['email', 'password']);
+        $user = User::where('email', $credentials['email'])->firstOrFail();
 
-        if (!Auth::attempt($credentials)) {
+        if (!$this->repository->validateLogin($user, $credentials['password'])) {
             abort(419, trans('auth.failed'));
         }
 
-        $user = User::where('email', $credentials['email'])->first();
-        $now = Carbon::now();
-
-        $key = env('JWT_PRIVATE_KEY');
-        $payload = [
-            "iss" => url('/'),
-            "aud" => url('/'),
-            "sub" => $user->id,
-            "iat" => $now->timestamp,
-            "exp" => $now->addHour()->timestamp,
-        ];
-
-        $jwt = JWT::encode($payload, $key);
+        $jwt = $this->repository->generateJWT($user->id);
 
         return response()->json([
             'jwt' => $jwt,

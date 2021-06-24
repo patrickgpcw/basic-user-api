@@ -9,6 +9,7 @@ use App\Http\Requests\UserApiUpdateRequest;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Support\Facades\Salt;
 use Illuminate\Support\Facades\Hash;
 
 class UserApiController extends Controller
@@ -16,7 +17,8 @@ class UserApiController extends Controller
     public function create(UserApiCreateRequest $request)
     {
         $userData = $request->only(['first_name', 'last_name', 'email', 'password', 'telephone']);
-        $userData['password'] = Hash::make($userData['password']);
+        $userData['salt'] = Salt::generate();
+        $userData['password'] = Hash::make($userData['password'] . $userData['salt']);
         $userData['avatar'] = "https://ui-avatars.com/api/?background=0D8ABC&color=fff&name={$userData['first_name']}+{$userData['last_name']}";
 
         User::create($userData);
@@ -50,7 +52,8 @@ class UserApiController extends Controller
         $userData = $request->only(['first_name', 'last_name', 'email', 'telephone']);
 
         if ($request->exists('password')) {
-            $userData['password'] = Hash::make($request->input('password'));
+            $userData['salt'] = Salt::generate();
+            $userData['password'] = Hash::make($request->input('password') . $userData['salt']);
         }
 
         $userData['avatar'] = "https://ui-avatars.com/api/?background=0D8ABC&color=fff&name={$userData['first_name']}+{$userData['last_name']}";
