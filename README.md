@@ -14,11 +14,11 @@ Executar o comando:
 
 `git clone git@github.com:patrickgpcw/basic-user-api.git`
 
-## Clonando repositório
+## Baixando dependências
 
 Executar o comando:
 
-`git clone git@github.com:patrickgpcw/basic-user-api.git`
+`composer update`
 
 ## Configurando o arquivo `.env`
 
