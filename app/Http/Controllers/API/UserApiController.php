@@ -9,7 +9,6 @@ use App\Http\Requests\UserApiUpdateRequest;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserApiController extends Controller
@@ -25,7 +24,6 @@ class UserApiController extends Controller
         return response()->json([
             'success' => true,
         ]);
-
     }
 
     public function read(UserApiReadRequest $request)
@@ -67,7 +65,7 @@ class UserApiController extends Controller
     public function delete(User $user)
     {
         $user->delete();
-        
+
         return response()->json([
             'success' => true,
         ]);

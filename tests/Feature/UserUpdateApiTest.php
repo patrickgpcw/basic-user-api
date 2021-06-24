@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Middleware\ValidJWTMiddleware;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -16,12 +17,14 @@ class UserUpdateApiTest extends TestCase
      */
     public function test_user_update()
     {
+        $this->withoutMiddleware(ValidJWTMiddleware::class);
+
         $user = User::first();
 
         $response = $this->json('PUT', "api/usuario/$user->id", [
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'email' => $this->faker->email(),
             'telephone' => '+55' . $this->faker->phoneNumberCleared(),
         ]);
 
@@ -37,6 +40,8 @@ class UserUpdateApiTest extends TestCase
 
     public function test_user_update_password()
     {
+        $this->withoutMiddleware(ValidJWTMiddleware::class);
+
         $user = User::first();
 
         $response = $this->json('PUT', "api/usuario/$user->id", [
@@ -60,6 +65,7 @@ class UserUpdateApiTest extends TestCase
 
     public function test_should_return_422_when_wrong_params()
     {
+        $this->withoutMiddleware(ValidJWTMiddleware::class);
 
         $user = User::first();
 
@@ -75,6 +81,7 @@ class UserUpdateApiTest extends TestCase
 
     public function test_should_return_422_when_wrong_params_with_password()
     {
+        $this->withoutMiddleware(ValidJWTMiddleware::class);
 
         $user = User::first();
 
@@ -92,6 +99,8 @@ class UserUpdateApiTest extends TestCase
 
     public function test_should_return_404_when_id_invalid()
     {
+        $this->withoutMiddleware(ValidJWTMiddleware::class);
+
         $response = $this->json('PUT', "api/usuario/9999999999", [
             'last_name' => 123,
             'email' => 'email@e@mail.com',

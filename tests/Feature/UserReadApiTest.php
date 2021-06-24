@@ -2,12 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Http\Middleware\ValidJWTMiddleware;
 use App\Http\Resources\UserCollection;
 use App\Models\User;
 use Tests\TestCase;
 
 class UserReadApiTest extends TestCase
 {
+
     /**
      * A basic feature test example.
      *
@@ -15,6 +17,8 @@ class UserReadApiTest extends TestCase
      */
     public function test_user_read_all()
     {
+        $this->withoutMiddleware(ValidJWTMiddleware::class);
+
         $page = 2;
         $quantity = 5;
 
@@ -32,6 +36,8 @@ class UserReadApiTest extends TestCase
 
     public function test_user_read_with_search()
     {
+        $this->withoutMiddleware(ValidJWTMiddleware::class);
+
         $page = config('api.page');
         $quantity = config('api.quantity');
 
@@ -56,6 +62,8 @@ class UserReadApiTest extends TestCase
 
     public function test_should_return_422_when_wrong_paraments()
     {
+        $this->withoutMiddleware(ValidJWTMiddleware::class);
+
         $response = $this->json('GET', 'api/usuario', [
             'nome' => 56,
             'pagina' => -2,
@@ -73,6 +81,8 @@ class UserReadApiTest extends TestCase
 
     public function test_should_return_422_when_page_is_biggest_then_limit()
     {
+        $this->withoutMiddleware(ValidJWTMiddleware::class);
+
         $response = $this->json('GET', 'api/usuario', [
             'pagina' => 10000,
             'exibir' => 100,

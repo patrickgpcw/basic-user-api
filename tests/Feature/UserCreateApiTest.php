@@ -16,7 +16,7 @@ class UserCreateApiTest extends TestCase
      */
     public function test_user_creation()
     {
-        $email = $this->faker->unique()->safeEmail();
+        $email = 'test_' . $this->faker->email();
 
         $response = $this->json('POST', 'api/usuario', [
             'first_name' => 'Patrick',
@@ -54,7 +54,6 @@ class UserCreateApiTest extends TestCase
             'password' => 'password',
             'password_confirmation' => 'passwod',
         ]);
-
 
         $response
             ->assertStatus(422)

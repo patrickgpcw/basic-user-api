@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Middleware\ValidJWTMiddleware;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -14,6 +15,8 @@ class UserDeleteApiTest extends TestCase
      */
     public function test_user_delete()
     {
+        $this->withoutMiddleware(ValidJWTMiddleware::class);
+
         $user = User::first();
 
         $response = $this->json('DELETE', "/api/usuario/$user->id");
@@ -28,8 +31,8 @@ class UserDeleteApiTest extends TestCase
 
     public function test_should_return_404_when_id_invalid()
     {
-        $response = $this->json('DELETE', "api/usuario/-99");
-
+        $this->withoutMiddleware(ValidJWTMiddleware::class);
+        $response = $this->json('DELETE', "api/usuario/-9999");
         $response->assertStatus(404);
     }
 }

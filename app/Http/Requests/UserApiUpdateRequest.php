@@ -27,7 +27,7 @@ class UserApiUpdateRequest extends FormRequest
         return [
             'first_name' => ['required', 'max:30', 'string'],
             'last_name' => ['required', 'max:30', 'string'],
-            'email' => ['required', 'max:30', 'email', Rule::unique('users')->ignore($this->user)],
+            'email' => ['required', 'max:255', 'email', Rule::unique('users')->ignore($this->user)],
             'telephone' => ['required', 'regex:/^\+55[0-9]{10,11}$/', 'string'],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'password_confirmation' => [Rule::requiredIf($this->input('password') != null), 'string', 'min:8'],

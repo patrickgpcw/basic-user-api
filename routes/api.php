@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\LoginApiController;
 use App\Http\Controllers\API\UserApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,14 +20,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/login', [LoginApiController::class, 'login']);
+
 Route::post('/usuario', [UserApiController::class, 'create']);
 
-Route::get('/usuario', [UserApiController::class, 'read']);
-
-Route::get('/usuario/{user}', [UserApiController::class, 'show']);
-
-Route::put('/usuario/{user}', [UserApiController::class, 'update']);
-
-Route::delete('/usuario/{user}', [UserApiController::class, 'delete']);
-
-
+Route::middleware('jwt')->group(function () {
+    Route::get('/usuario', [UserApiController::class, 'read']);
+    Route::get('/usuario/{user}', [UserApiController::class, 'show']);
+    Route::put('/usuario/{user}', [UserApiController::class, 'update']);
+    Route::delete('/usuario/{user}', [UserApiController::class, 'delete']);
+});
