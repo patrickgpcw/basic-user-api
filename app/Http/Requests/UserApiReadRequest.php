@@ -25,12 +25,10 @@ class UserApiReadRequest extends FormRequest
      */
     public function rules()
     {
-        $quantity = $this->input('exibir', config('api.quantity'));
-        $userTotal = User::count();
+        $name = $this->input('nome');
 
-        $this->merge([
-            'user_total' => $userTotal,
-        ]);
+        $quantity = $this->input('exibir', config('api.quantity'));
+        $userTotal = User::name($name)->count();
 
         return [
             'nome' => ['nullable', 'string', 'max:30'],

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class UserCollection extends ResourceCollection
@@ -14,9 +15,12 @@ class UserCollection extends ResourceCollection
      */
     public function toArray($request)
     {
+        $name = $request->input('nome');
+
         $page = $request->input('pagina', 1);
         $getItems = $request->input('exibir', 5);
-        $userCount = $request->input('user_total', 0);
+
+        $userCount = User::name($name)->count();
         $pageCount = ceil($userCount / $getItems);
 
         return [
