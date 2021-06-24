@@ -63,4 +63,13 @@ class UserApiController extends Controller
             'success' => true,
         ]);
     }
+
+    public function delete(User $user)
+    {
+        $user->delete();
+        
+        return response()->json([
+            'success' => true,
+        ]);
+    }
 }

@@ -27,4 +27,6 @@ Route::get('/usuario/{user}', [UserApiController::class, 'show']);
 
 Route::put('/usuario/{user}', [UserApiController::class, 'update']);
 
+Route::delete('/usuario/{user}', [UserApiController::class, 'delete']);
+
 

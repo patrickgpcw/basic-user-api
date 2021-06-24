@@ -89,4 +89,17 @@ class UserUpdateApiTest extends TestCase
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['first_name', 'last_name', 'email', 'telephone', 'password', 'password_confirmation']);
     }
+
+    public function test_should_return_404_when_id_invalid()
+    {
+        $response = $this->json('PUT', "api/usuario/9999999999", [
+            'last_name' => 123,
+            'email' => 'email@e@mail.com',
+            'telephone' => 'oitudobem',
+            'password' => '123trocarsenha',
+            'password_confirmation' => '12334',
+        ]);
+
+        $response->assertStatus(404);
+    }
 }
