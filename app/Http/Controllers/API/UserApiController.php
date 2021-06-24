@@ -5,9 +5,11 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserApiCreateRequest;
 use App\Http\Requests\UserApiReadRequest;
+use App\Http\Requests\UserApiUpdateRequest;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserApiController extends Controller
@@ -43,5 +45,22 @@ class UserApiController extends Controller
     public function show(User $user)
     {
         return response()->json(new UserResource($user));
+    }
+
+    public function update(UserApiUpdateRequest $request, User $user)
+    {
+        $userData = $request->only(['first_name', 'last_name', 'email', 'telephone']);
+
+        if ($request->exists('password')) {
+            $userData['password'] = Hash::make($request->input('password'));
+        }
+
+        $userData['avatar'] = "https://ui-avatars.com/api/?background=0D8ABC&color=fff&name={$userData['first_name']}+{$userData['last_name']}";
+
+        $user->update($userData);
+
+        return response()->json([
+            'success' => true,
+        ]);
     }
 }

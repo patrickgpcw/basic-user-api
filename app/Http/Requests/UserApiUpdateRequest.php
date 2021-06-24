@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserApiCreateRequest extends FormRequest
+class UserApiUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,10 +27,10 @@ class UserApiCreateRequest extends FormRequest
         return [
             'first_name' => ['required', 'max:30', 'string'],
             'last_name' => ['required', 'max:30', 'string'],
-            'email' => ['required', 'max:30', 'email', Rule::unique('users')],
+            'email' => ['required', 'max:30', 'email', Rule::unique('users')->ignore($this->user)],
             'telephone' => ['required', 'regex:/^\+55[0-9]{10,11}$/', 'string'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'password_confirmation' => ['required', 'string', 'min:8'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'password_confirmation' => [Rule::requiredIf($this->input('password') != null), 'string', 'min:8'],
         ];
     }
 }

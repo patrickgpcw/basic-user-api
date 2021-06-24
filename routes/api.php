@@ -24,3 +24,7 @@ Route::post('/usuario', [UserApiController::class, 'create']);
 Route::get('/usuario', [UserApiController::class, 'read']);
 
 Route::get('/usuario/{user}', [UserApiController::class, 'show']);
+
+Route::put('/usuario/{user}', [UserApiController::class, 'update']);
+
+
